@@ -1,13 +1,12 @@
 from .party import Party, ALL_ROLES
 from .register import Register
-from pickle import dumps as pickle_dumps, loads as pickle_loads
 
 
-class Transfer():
+class Communication():
     SPLIT = '?_?'
 
-    def __init__(self, name: str, src_role: Party, dest_role: Party):
-        self.name = name
+    def __init__(self, src_role: Party, dest_role: Party, prefix_tag: str=''):
+        self.prefix_tag = prefix_tag
         assert src_role in ALL_ROLES, f'error role {src_role}'
         assert dest_role in ALL_ROLES, f'error role {dest_role}'
         assert dest_role != src_role, f'dest_role cant be same with src_role {src_role}'
@@ -22,17 +21,18 @@ class Transfer():
     def role2party(self):
         return Register.ROLE2PARTY
 
-    def put(self, data, tag: tuple):
+    def put(self, data, tag: tuple, stream=False):
         # TODO: base64
         self.engine.push(
-            data=pickle_dumps(data).hex(),
+            data=data,
             parties=self.role2party[self.dest_role],
-            tag=self.name + self.SPLIT.join((str(t) for t in tag))
+            tag=self.prefix_tag + self.SPLIT.join((str(t) for t in tag)),
+            stream=stream
         )
 
     def get(self, tag: tuple):
         for i in self.engine.pull(
             parties=self.role2party[self.src_role],
-            tag=self.name + self.SPLIT.join((str(t) for t in tag))
+            tag=self.prefix_tag + self.SPLIT.join((str(t) for t in tag))
         ):
-            yield pickle_loads(bytes.fromhex(i.decode()))
+            yield i
