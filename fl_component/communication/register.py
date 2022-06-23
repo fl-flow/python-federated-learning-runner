@@ -18,7 +18,7 @@ class Register():
         local_id: str,
         role: str
     ):
-        assert cls.ENGINE == None, 'duplicate register'
+        # assert cls.ENGINE == None, 'duplicate register'
         assert mode in COMMUNICATION_ENGINE_MAP, f'error mode {mode}'
         cls.parse_party_map(party_map=party_map, local_id=local_id, role=role)
         communication_setting = COMMUNICATION_ENGINE_MAP[mode]

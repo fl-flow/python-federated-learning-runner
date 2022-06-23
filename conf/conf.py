@@ -1,6 +1,6 @@
 COMMUNICATION_ENGINE_MAP = {
     'TJMQ': {
-        'module': 'communication.engine.TJMQ.engine.Engine',
+        'module': 'fl_component.communication.engine.TJMQ.engine.Engine',
         'args': {
             'ip': '127.0.0.1',
             'port': 5671,
