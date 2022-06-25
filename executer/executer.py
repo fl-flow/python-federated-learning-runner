@@ -6,7 +6,7 @@ from .tracker import Tracker
 class Executer():
     def __init__(self):
         pass
-        # self.tracker = Tracker()
+        self.tracker = Tracker()
 
     def run(self):
         parser = argparse.ArgumentParser('传入参数：***.py')
@@ -16,4 +16,6 @@ class Executer():
         if not args.module:
             exit(1)
 
-    
+
+if __name__ == '__main__':
+    Executer().run()
