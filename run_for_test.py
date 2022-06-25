@@ -9,7 +9,11 @@ if __name__ == '__main__':
     )
 
     common_args = {
-        'common_arg1': 'asdsd'
+        'communication': {},
+        'storage': {},
+        'computing': {
+            'engine': 'engine'
+        }
     }
     task_args = {
         'arg1': 'asdasdasd'

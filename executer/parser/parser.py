@@ -1,5 +1,6 @@
 import typing
 from json import loads, dumps
+from .common_parameter_parser.common_parameter_parser import CommonParameterParser
 
 
 class Input():
@@ -51,4 +52,6 @@ class Parser():
         return loads(raw_parameters)
 
     def parse_common_parameter(self, raw_common_parameter):
-        return loads(raw_common_parameter)
+        raw = loads(raw_common_parameter)
+        CommonParameterParser(raw).validate()
+        return raw
