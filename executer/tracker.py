@@ -1,4 +1,5 @@
 from base64 import b64decode
+from functools import cached_property
 
 from .parser.parser import Parser
 from utils.logger import Logger
@@ -14,9 +15,11 @@ class Tracker():
         self.parameters = None
         self.input_length = 0
         self.out_length = 0
-        self.get_input()
 
-    def get_input(self):
+    def load(self):
+        self.load_conf()
+
+    def load_conf(self):
         self.common_parameter = self.parser.parse_common_parameter(
             (b64decode(input())).decode('utf-8')
         )
@@ -29,11 +32,26 @@ class Tracker():
         logger.info(f'got input_length: {self.input_length}')
         self.out_length = int((b64decode(input())).decode('utf-8'))
         logger.info(f'got out_length: {self.out_length}')
-        self.get_input_data()
+        self.load_input_data()
 
-    def get_input_data(self) -> list:
+    def load_input_data(self) -> list:
         self.input = self.parser.deserialize_input_data([
             (b64decode(input())).decode('utf-8')
             for i in range(self.input_length)
         ])
-        logger.info(f'got input: {[i._raw_dict for i in self.input]}')
+        logger.info(f'got input data: {[i.source for i in self.input.data]}')
+        logger.info(f'got input model: {[i.source for i in self.input.model]}')
+
+    @cached_property
+    def input_data(self):
+        return [
+            i.source
+            for i in self.input.data
+        ]
+
+    @cached_property
+    def input_model(self):
+        return [
+            i.source
+            for i in self.input.model
+        ]

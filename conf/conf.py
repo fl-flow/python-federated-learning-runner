@@ -8,3 +8,20 @@ COMMUNICATION_ENGINE_MAP = {
         }
     }
 }
+
+
+COMPUTING_ENGINE_MAP = {
+    'TJQueue': {
+        'module': 'fl_component.computing.engine.TJQueue.session.Session'
+    },
+}
+
+
+STORAGE_ENGINE_MAP = {
+    'file': {
+        'module': {
+            'table': 'fl_component.storage.engine.file.table.Table',
+            'address': 'fl_component.storage.engine.file.address.Address',
+        }
+    }
+}

@@ -14,3 +14,11 @@ class CommonParameterParserError(BaseParserError):
             code=code,
             msg=msg
         )
+
+
+class DataModelParserError(BaseParserError):
+    def __init__(self, code=102000, msg='data/model parser error'):
+        super().__init__(
+            code=code,
+            msg=msg
+        )

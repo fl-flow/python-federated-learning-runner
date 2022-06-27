@@ -9,10 +9,14 @@ if __name__ == '__main__':
     )
 
     common_args = {
-        'communication': {},
-        'storage': {},
+        'communication': {
+            'engine': 'TJMQ'
+        },
+        'storage': {
+            
+        },
         'computing': {
-            'engine': 'engine'
+            'engine': 'TJQueue'
         }
     }
     task_args = {
@@ -23,12 +27,12 @@ if __name__ == '__main__':
 
     input_data = [
         {
-            'm': ['mmm'],
-            'd': ['ddd'],
+            'type': 'data',
+            'value': 'ddd',
         },
         {
-            'm': ['mmmmmm'],
-            'd': ['dddddd'],
+            'type': 'model',
+            'value': 'dddddd',
         },
     ]
 

@@ -1,7 +1,7 @@
 import typing
 from .party import Party
-from conf.conf import COMMUNICATION_ENGINE_MAP
 from utils.importer import import_class
+from conf.conf import COMMUNICATION_ENGINE_MAP
 
 
 class Register():
