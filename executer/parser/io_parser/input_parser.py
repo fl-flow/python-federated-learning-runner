@@ -5,20 +5,18 @@ from exception.executer.parser import DataModelParserError
 
 
 class BaseInputType():
-    def __init__(self, source: typing.List[str], annotation):
-        if not source:
-            raise DataModelParserError(msg=f'input.type.source is required')
-        if not isinstance(source, list):
-            raise DataModelParserError(msg=f'input.type.source require list')
+    def __init__(self, sources: typing.List[str], annotation):
+        if not sources:
+            raise DataModelParserError(msg=f'input.type.sources is required')
+        if not isinstance(sources, list):
+            raise DataModelParserError(msg=f'input.type.sources require list')
         try:
             annotation = int(annotation)
         except ValueError:
             raise DataModelParserError(msg=f'input.model.type annotation require int')
-        if annotation >= len(source):
-            raise DataModelParserError(msg=f'input.model.type annotation should less than source.length')
-        self.source = source
-        self.annotation = annotation
-
+        if annotation >= len(sources):
+            raise DataModelParserError(msg=f'input.model.type annotation should less than sources.length')
+        self.source = sources[annotation]
 
 
 class Data(BaseInputType):
@@ -42,7 +40,7 @@ class Input():
                 raise DataModelParserError(msg=f'error type {_type}')
             getattr(self, _type).append(
                 cls(
-                    source=raw_dict.get('value'),
+                    sources=raw_dict.get('value'),
                     annotation=annotation
                 )
             )

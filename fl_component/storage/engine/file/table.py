@@ -3,6 +3,7 @@ from functools import cached_property
 
 from .address import Address
 from ...abstract import AbstractTable
+from exception.fl_component.storage import StorageSourceParseError
 
 
 class Table(AbstractTable):
@@ -20,8 +21,12 @@ class Table(AbstractTable):
 
     @cached_property
     def rf(self):
-        return open(self.address.path, 'rb')
-
+        try:
+            return open(self.address.path, 'rb')
+        except FileNotFoundError:
+            raise StorageSourceParseError(
+                msg=f'{self.address.path} FileNotFound'
+            )
     def collect(self):
         self.rf.seek(0)
         while 1:

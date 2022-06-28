@@ -4,7 +4,7 @@ from base64 import b64encode
 
 if __name__ == '__main__':
     p = subprocess.Popen(
-        ['python3', 'run.py'],
+        ['python3', 'run.py', '-m', 'Reader'],
         stdin=subprocess.PIPE
     )
 
@@ -13,13 +13,13 @@ if __name__ == '__main__':
             'engine': 'TJMQ'
         },
         'storage': {
-
+            'engine': 'file'
         },
         'computing': {
             'engine': 'TJQueue'
         },
         'party_map': { # TODO:
-            'Guest': ['Tho Jiajin']
+            'GUEST': ['Tho Jiajin']
         }
     }
     task_args = {
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         {
             'type': 'data',
             'annotation': 0,
-            'value': ['file:///Users/xinchengshao/Desktop/workspace/python-fl-runner/asdasd.py'],
+            'value': ['file://@:/Users/xinchengshao/Desktop/workspace/python-fl-runner/var/storage/2022-06-28/99b63b5293274901ab08f514ce03b2fc?'],
         },
         {
             'type': 'model',
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     task_info = { # TODO:
         'job_id': 'job_id',
         'task_id': 'task_id',
-        'group': 'Guest',
+        'group': 'GUEST',
         'task_name': 'task_name'
     }
     p.stdin.write(b64encode(dumps(task_info).encode()) + b'\n')

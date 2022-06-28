@@ -13,15 +13,15 @@ class Register():
     def register_engine(
         cls,
         session_id: str,
-        mode: str,
+        engine: str,
         party_map: typing.Dict[str, typing.List[str]],
         local_id: str,
         role: str
     ):
         # assert cls.ENGINE == None, 'duplicate register'
-        assert mode in COMMUNICATION_ENGINE_MAP, f'error mode {mode}'
+        assert engine in COMMUNICATION_ENGINE_MAP, f'error engine {engine}'
         cls.parse_party_map(party_map=party_map, local_id=local_id, role=role)
-        communication_setting = COMMUNICATION_ENGINE_MAP[mode]
+        communication_setting = COMMUNICATION_ENGINE_MAP[engine]
         cls.ENGINE = import_class(communication_setting['module'])(
             session_id=session_id,
             local_party=cls.LOCAL_PARTY,

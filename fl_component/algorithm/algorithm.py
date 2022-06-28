@@ -1,0 +1,2 @@
+class BaseAlgorithm():
+    pass

@@ -10,11 +10,11 @@ class Register():
     def register_engine(
         cls,
         session_id: str,
-        mode: str,
+        engine: str,
     ):
         assert cls.ENGINE == None, 'duplicate register'
-        assert mode in COMPUTING_ENGINE_MAP, f'error mode {mode}'
-        module = COMPUTING_ENGINE_MAP[mode]['module']
+        assert engine in COMPUTING_ENGINE_MAP, f'error engine {engine}'
+        module = COMPUTING_ENGINE_MAP[engine]['module']
         cls.ENGINE = import_class(module)
 
     @classmethod

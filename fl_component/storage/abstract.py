@@ -2,7 +2,10 @@ from pickle import dumps, loads
 
 
 class AbstractAddress():
-    pass
+    ARGS_KEYS = ('username', 'password', 'path', 'query', 'host', 'port')
+    def __init__(self, *args, **kw):
+        assert hasattr(self, 'args'), 'error self.args is required'
+        assert all([(i in self.ARGS_KEYS) for i in self.args])
 
 
 class AbstractTable():
