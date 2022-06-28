@@ -25,3 +25,9 @@ STORAGE_ENGINE_MAP = {
         }
     }
 }
+
+
+PARTY_ID = 'Tho Jiajin'
+
+
+ALLOWED_ROLES = ('Guest', 'Host', 'Arbiter')

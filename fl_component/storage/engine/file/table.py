@@ -8,23 +8,30 @@ from ...abstract import AbstractTable
 class Table(AbstractTable):
     def __init__(self, address: Address=None):
         self.address = address or Address()
-        path = self.address.path
 
         # hash path
-        dirs, file_path = os.path.split(path)
+        dirs, file_path = os.path.split(self.address.path)
         if not os.path.exists(dirs):
             os.makedirs(dirs)
 
-        self.f = open(path, 'wb+')
+    @cached_property
+    def wf(self):
+        return open(self.address.path, 'ab+')
+
+    @cached_property
+    def rf(self):
+        return open(self.address.path, 'rb')
 
     def collect(self):
+        self.rf.seek(0)
         while 1:
-            d = self.f.readline()
+            d = self.rf.readline()
             if d == b'':
                 break
             yield self.loads(d.strip())
 
     def put_all(self, data_list):
         for i in data_list:
-            self.f.write(self.dumps(i))
-            self.f.write(b'\n')
+            self.wf.write(self.dumps(i))
+            self.wf.write(b'\n')
+        self.wf.flush()

@@ -22,3 +22,11 @@ class DataModelParserError(BaseParserError):
             code=code,
             msg=msg
         )
+
+
+class TaskInfoParserError(BaseParserError):
+    def __init__(self, code=103000, msg='task info parser error'):
+        super().__init__(
+            code=code,
+            msg=msg
+        )

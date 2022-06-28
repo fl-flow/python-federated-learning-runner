@@ -2,6 +2,7 @@ import typing
 from json import loads, dumps
 
 from .io_parser import Input, Output
+from .task_info_parser import TaskInfoParser
 from .common_parameter_parser.common_parameter_parser import CommonParameterParser
 
 
@@ -30,3 +31,7 @@ class Parser():
         common_parameter_parser = CommonParameterParser(raw)
         common_parameter_parser.validate()
         return common_parameter_parser
+
+    def parse_task_info(self, task_info):
+        task_info = loads(task_info)
+        return TaskInfoParser(task_info)

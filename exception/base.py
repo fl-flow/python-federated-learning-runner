@@ -5,3 +5,4 @@ class BaseFLError(Exception):
 
 
 # ParserError 100000
+# StorageError 200000
