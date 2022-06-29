@@ -37,8 +37,6 @@ class Executer():
         output_data = self.tracker.save_output_data(instance.output_data)
         self.tracker.save_output_model(instance.output_model)
 
-        print(output_data)
-
     def register_fl_component(self):
         task_info = self.parser_runner.task_info
         session_id = task_info.job_id
