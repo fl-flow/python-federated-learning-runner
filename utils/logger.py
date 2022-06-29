@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 from loguru import logger
 from loguru._logger import Core as _Core, Logger as _Logger
 
@@ -31,7 +32,8 @@ class Logger():
     def __init__(self, name, level='INFO', is_async=True):
         self.is_async = is_async
         self.logger = self.LoggingMap[name]
-        container = sys.stdout # TODO:
+        # container = sys.stdout # TODO:
+        container = open(Path(__file__).resolve().parent.parent / 'log.log', 'w')
         self.logger.add(
             container,
             format='<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | '

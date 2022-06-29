@@ -27,7 +27,7 @@ STORAGE_ENGINE_MAP = {
 }
 
 
-PARTY_ID = 'Tho Jiajin'
+PARTY_ID = '127.0.0.1:8443'
 
 
 ALLOWED_ROLES = ('GUEST', 'HOST', 'ARBITER')

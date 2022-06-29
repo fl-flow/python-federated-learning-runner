@@ -1,9 +1,16 @@
+import sys
+from json import dumps
+from base64 import b64encode
 from functools import cached_property
 
+from utils.logger import Logger
 from fl_component.storage.finder import Finder
 from .parser.parser_runner import ParserRunner
-from fl_component.computing.register import Register as ComputingRegister
 from fl_component.storage.register import Register as StorageRegister
+from fl_component.computing.register import Register as ComputingRegister
+
+
+logger = Logger(__file__)
 
 
 class Tracker():
@@ -37,8 +44,15 @@ class Tracker():
             yield f"{engine}://{args.get('username', '')}@{args.get('passwd', '')}:{args.get('port', '')}{args.get('path', '')}?{'&'.join([k+'='+v for k, v in args.get('query', {}).items()])}"
 
     def save_output_data(self, output_data):
-        return list(self.__save_output_data(output_data))
-        
+        logger.info(f'got output_data: {output_data}')
+        output_data = list(self.__save_output_data(output_data))
+        sys.stdout.write(b64encode(dumps({
+            'type': 'data',
+            'value': output_data,
+        }).encode()).decode() + '\n')
+        return output_data
+
+
     def save_output_model(self, output_model):
         # TODO:
         pass

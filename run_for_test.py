@@ -1,8 +1,10 @@
+import sys
 import subprocess
 from json import dumps
 from base64 import b64encode
 
 if __name__ == '__main__':
+    print(dir(sys.stdout))
     p = subprocess.Popen(
         ['python3', 'run.py', '-m', 'Reader'],
         stdin=subprocess.PIPE
@@ -18,8 +20,8 @@ if __name__ == '__main__':
         'computing': {
             'engine': 'TJQueue'
         },
-        'party_map': { # TODO:
-            'GUEST': ['Tho Jiajin']
+        'party_map': {
+            'GUEST': ['127.0.0.1:8443']
         }
     }
     task_args = {

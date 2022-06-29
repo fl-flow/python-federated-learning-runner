@@ -3,3 +3,4 @@ var
 TJMQ
 TJQueue
 .coverage
+*.log
