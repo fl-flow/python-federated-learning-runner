@@ -55,4 +55,7 @@ class Tracker():
 
     def save_output_model(self, output_model):
         # TODO:
-        pass
+        sys.stdout.write(b64encode(dumps({
+            'type': 'model',
+            'value': output_model,
+        }).encode()).decode() + '\n')

@@ -32,7 +32,9 @@ class Input():
     def __init__(self, raw_list):
         self._raw_list = raw_list
         for i in self.ALLOWED_TYPES_MAP: setattr(self, i, [])
-        for _raw_dict, annotation in raw_list:
+        for i in raw_list:
+            i_ = loads(i)
+            _raw_dict, annotation = i_['value'], i_['annotation']
             raw_dict = loads(_raw_dict)
             _type = raw_dict.get('type', 'data')
             cls = self.ALLOWED_TYPES_MAP.get(_type)

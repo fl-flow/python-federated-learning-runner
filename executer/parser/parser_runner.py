@@ -39,10 +39,7 @@ class ParserRunner():
 
     def load_input_data(self) -> list:
         self.input = self.parser.deserialize_input_data([
-            (
-                (b64decode(input())).decode('utf-8'),
-                (b64decode(input())).decode('utf-8')
-            )
+            (b64decode(input())).decode('utf-8')
             for i in range(self.input_length)
         ])
         logger.info(f'got input data: {[i.source for i in self.input.data]}')
