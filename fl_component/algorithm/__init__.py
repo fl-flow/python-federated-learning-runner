@@ -1,1 +1,1 @@
-from .algorithm import BaseAlgorithm
+from .algorithm import BaseAlgorithm, BaseAlgorithmParameter

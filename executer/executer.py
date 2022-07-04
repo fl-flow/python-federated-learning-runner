@@ -31,7 +31,9 @@ class Executer():
         setattr(self.algorithm, 'input_model', self.tracker.input_model)
         setattr(self.algorithm, 'output_data', [])
         setattr(self.algorithm, 'output_model', [])
-        instance = self.algorithm()
+        algorithm_cls = self.algorithm
+        algorithm_cls.parse_parameter(self.parser_runner.parameters)
+        instance = algorithm_cls()
         instance.run()
 
         output_data = self.tracker.save_output_data(instance.output_data)

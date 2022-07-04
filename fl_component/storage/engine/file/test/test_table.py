@@ -7,5 +7,4 @@ class SessionTest(unittest.TestCase):
         data = [(1, 2), ('a', 2)]
         table = Table()
         table.put_all(data)
-        table.f.seek(0)
         assert list((table)) == data

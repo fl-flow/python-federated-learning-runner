@@ -26,6 +26,7 @@ class Tracker():
                 include_key=False,
             )
             for i in self.parser_runner.input.data
+            if i.source
         ]
 
     @cached_property
@@ -33,16 +34,18 @@ class Tracker():
         return [
             list(Finder.load(i.source))[0]
             for i in self.parser_runner.input.model
+            if i.source
         ]
 
     def __save(self, output_data):
         # TODO: save
         engine, table_engin, address_engine = StorageRegister.get_engine()
         for i in output_data:
-            address = address_engine()
-            table_engin(address).put_all(i)
-            args = address.args
-            yield f"{engine}://{args.get('username', '')}@{args.get('passwd', '')}:{args.get('port', '')}{args.get('path', '')}?{'&'.join([k+'='+v for k, v in args.get('query', {}).items()])}"
+            yield table_engin(address_engine()).save(i)
+            # address = address_engine()
+            # table_engin(address).put_all(i)
+            # args = address.args
+            # yield f"{engine}://{args.get('username', '')}@{args.get('passwd', '')}:{args.get('port', '')}{args.get('path', '')}?{'&'.join([k+'='+v for k, v in args.get('query', {}).items()])}"
 
     def save_output_data(self, output_data):
         logger.info(f'got output_data: {output_data}')

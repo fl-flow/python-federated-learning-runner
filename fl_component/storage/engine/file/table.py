@@ -27,6 +27,7 @@ class Table(AbstractTable):
             raise StorageSourceParseError(
                 msg=f'{self.address.path} FileNotFound'
             )
+
     def collect(self):
         self.rf.seek(0)
         while 1:
@@ -40,3 +41,7 @@ class Table(AbstractTable):
             self.wf.write(self.dumps(i))
             self.wf.write(b'\n')
         self.wf.flush()
+
+    @property
+    def engine(self):
+        return 'file'

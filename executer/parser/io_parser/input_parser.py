@@ -7,7 +7,9 @@ from exception.executer.parser import DataModelParserError
 class BaseInputType():
     def __init__(self, sources: typing.List[str], annotation):
         if not sources:
-            raise DataModelParserError(msg=f'input.type.sources is required')
+            self.source = None
+            return
+            # raise DataModelParserError(msg=f'input.type.sources is required')
         if not isinstance(sources, list):
             raise DataModelParserError(msg=f'input.type.sources require list')
         try:
