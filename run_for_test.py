@@ -32,14 +32,18 @@ if __name__ == '__main__':
 
     input_data = [
         {
-            'type': 'data',
             'annotation': 0,
-            'value': ['file://@:/Users/xinchengshao/Desktop/workspace/python-fl-runner/var/storage/2022-06-28/99b63b5293274901ab08f514ce03b2fc?'],
+            'value': dumps({
+                'type': 'data',
+                'value': ['file://@:/Users/xinchengshao/Desktop/workspace/python-fl-runner/var/storage/2022-06-28/99b63b5293274901ab08f514ce03b2fc?'],
+            })
         },
         {
-            'type': 'model',
             'annotation': 0,
-            'value': ['dddddd'],
+            'value': dumps({
+                'type': 'model',
+                'value': ['file://@:/Users/xinchengshao/Desktop/workspace/python-fl-runner/var/storage/2022-06-28/99b63b5293274901ab08f514ce03b2fczzz?'],
+            })
         },
     ]
 
@@ -56,9 +60,7 @@ if __name__ == '__main__':
     p.stdin.write(b64encode(f'{input_length}'.encode()) + b'\n')
     p.stdin.write(b64encode(f'{output_length}'.encode()) + b'\n')
     for i in input_data:
-        annotation = i.pop('annotation') # TODO:
         p.stdin.write(b64encode(dumps(i).encode()) + b'\n')
-        p.stdin.write(b64encode(dumps(annotation).encode()) + b'\n') # TODO: write annotation
     p.stdin.flush()
 
     p.wait()

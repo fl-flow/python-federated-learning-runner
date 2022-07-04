@@ -30,22 +30,23 @@ class Tracker():
 
     @cached_property
     def input_model(self):
-        # TODO:
-        return self.parser_runner.input.model
+        return [
+            list(Finder.load(i.source))[0]
+            for i in self.parser_runner.input.model
+        ]
 
-    def __save_output_data(self, output_data):
+    def __save(self, output_data):
         # TODO: save
         engine, table_engin, address_engine = StorageRegister.get_engine()
         for i in output_data:
             address = address_engine()
             table_engin(address).put_all(i)
             args = address.args
-            ARGS_KEYS = ('username', 'password', 'path', 'query', 'host', 'port')
             yield f"{engine}://{args.get('username', '')}@{args.get('passwd', '')}:{args.get('port', '')}{args.get('path', '')}?{'&'.join([k+'='+v for k, v in args.get('query', {}).items()])}"
 
     def save_output_data(self, output_data):
         logger.info(f'got output_data: {output_data}')
-        output_data = list(self.__save_output_data(output_data))
+        output_data = list(self.__save(output_data))
         sys.stdout.write(b64encode(dumps({
             'type': 'data',
             'value': output_data,
@@ -54,8 +55,10 @@ class Tracker():
 
 
     def save_output_model(self, output_model):
-        # TODO:
+        logger.info(f'got output_model: {output_model}')
+        output_model = list(self.__save(output_model))
         sys.stdout.write(b64encode(dumps({
             'type': 'model',
             'value': output_model,
         }).encode()).decode() + '\n')
+        return output_model
