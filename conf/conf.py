@@ -9,13 +9,13 @@ COMMUNICATION_ENGINE_MAP = {
     }
 }
 
-
 COMPUTING_ENGINE_MAP = {
     'TJQueue': {
         'module': 'fl_component.computing.engine.TJQueue.session.Session'
     },
 }
 
+COMPUTING_ENGINE = 'TJQueue'
 
 STORAGE_ENGINE_MAP = {
     'file': {
@@ -26,6 +26,7 @@ STORAGE_ENGINE_MAP = {
     }
 }
 
+STORAGE_ENGINE = 'file'
 
 PARTY_ID = '127.0.0.1:8443'
 
