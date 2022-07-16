@@ -65,3 +65,8 @@ class Tracker():
             'value': output_model,
         }).encode()).decode() + '\n')
         return output_model
+
+    def save_summary(self, summary):
+        logger.info(f'got summary: {summary}')
+        sys.stdout.write(b64encode(dumps(summary).encode()).decode() + '\n')
+        return summary

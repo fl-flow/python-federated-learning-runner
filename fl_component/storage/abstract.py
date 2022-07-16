@@ -20,10 +20,10 @@ class AbstractTable():
 
     # TODO: 更换跨语言 序列化 方案
     def dumps(self, data):
-        return dumps(data)
+        return dumps(data).hex()
 
     def loads(self, data):
-        return loads(data)
+        return loads(bytes.fromhex(data))
 
     def save(self, data_list):
         self.put_all(data_list)

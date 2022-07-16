@@ -25,17 +25,19 @@ class Executer():
 
     def run(self):
 
-
         self.register_fl_component()
 
         setattr(self.algorithm, 'input_data', self.tracker.input_data)
         setattr(self.algorithm, 'input_model', self.tracker.input_model)
         setattr(self.algorithm, 'output_data', [])
         setattr(self.algorithm, 'output_model', [])
+        setattr(self.algorithm, 'summary', {})
         algorithm_cls = self.algorithm
         algorithm_cls.parse_parameter(self.parser_runner.parameters)
         instance = algorithm_cls()
         instance.run()
+        assert isinstance(instance.summary, dict), 'error summary'
+        summary_ = self.tracker.save_summary(instance.summary)
 
         output_data = self.tracker.save_output_data(instance.output_data)
         self.tracker.save_output_model(instance.output_model)

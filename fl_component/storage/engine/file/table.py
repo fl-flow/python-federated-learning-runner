@@ -17,12 +17,12 @@ class Table(AbstractTable):
 
     @cached_property
     def wf(self):
-        return open(self.address.path, 'ab+')
+        return open(self.address.path, 'a+')
 
     @cached_property
     def rf(self):
         try:
-            return open(self.address.path, 'rb')
+            return open(self.address.path, 'r')
         except FileNotFoundError:
             raise StorageSourceParseError(
                 msg=f'{self.address.path} FileNotFound'
@@ -32,14 +32,13 @@ class Table(AbstractTable):
         self.rf.seek(0)
         while 1:
             d = self.rf.readline()
-            if d == b'':
+            if d == '':
                 break
             yield self.loads(d.strip())
 
     def put_all(self, data_list):
         for i in data_list:
-            self.wf.write(self.dumps(i))
-            self.wf.write(b'\n')
+            self.wf.write(self.dumps(i) + '\n')
         self.wf.flush()
 
     @property

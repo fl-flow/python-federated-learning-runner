@@ -14,7 +14,7 @@ def readline(f):
             break
         yield line.strip().split(',')
 
-        
+
 class Upload(BaseAlgorithm):
     parameter = Parameter()
     SchemaMethodMap = {
@@ -27,7 +27,10 @@ class Upload(BaseAlgorithm):
 
     def run(self):
         self.validate()
-        getattr(self, self.SchemaMethodMap[self.schema])(self.components)
+        u = getattr(self, self.SchemaMethodMap[self.schema])(self.components)
+        self.summary.update({
+            'url': u
+        })
 
     def validate(self):
         url = self.parameter.url
@@ -47,4 +50,4 @@ class Upload(BaseAlgorithm):
         path = components['path']
         f = open(path)
         engine, table_engin, address_engine = StorageRegister.get_engine()
-        table_engin(address_engine()).save(readline(f))
+        return table_engin(address_engine()).save(readline(f))
