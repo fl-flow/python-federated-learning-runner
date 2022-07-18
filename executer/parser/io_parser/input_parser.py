@@ -29,8 +29,12 @@ class Model(BaseInputType):
     pass
 
 
+class Tensor(BaseInputType):
+    pass
+
+
 class Input():
-    ALLOWED_TYPES_MAP = {'model': Model, 'data': Data}
+    ALLOWED_TYPES_MAP = {'model': Model, 'data': Data, 'tensor': Tensor}
     def __init__(self, raw_list):
         self._raw_list = raw_list
         for i in self.ALLOWED_TYPES_MAP: setattr(self, i, [])

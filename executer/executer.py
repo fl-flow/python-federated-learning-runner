@@ -29,8 +29,10 @@ class Executer():
 
         setattr(self.algorithm, 'input_data', self.tracker.input_data)
         setattr(self.algorithm, 'input_model', self.tracker.input_model)
+        setattr(self.algorithm, 'input_tensor', self.tracker.input_tensor)
         setattr(self.algorithm, 'output_data', [])
         setattr(self.algorithm, 'output_model', [])
+        setattr(self.algorithm, 'output_tensor', [])
         setattr(self.algorithm, 'summary', {})
         algorithm_cls = self.algorithm
         algorithm_cls.parse_parameter(self.parser_runner.parameters)
@@ -41,6 +43,7 @@ class Executer():
 
         output_data = self.tracker.save_output_data(instance.output_data)
         self.tracker.save_output_model(instance.output_model)
+        self.tracker.save_output_tensor(instance.output_tensor)
 
     def register_fl_component(self):
         task_info = self.parser_runner.task_info

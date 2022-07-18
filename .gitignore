@@ -4,3 +4,4 @@ TJMQ
 TJQueue
 .coverage
 *.log
+*.DS_Store

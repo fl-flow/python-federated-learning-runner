@@ -30,6 +30,11 @@ class Tracker():
         ]
 
     @cached_property
+    def input_tensor(self):
+        # TODO:
+        return []
+
+    @cached_property
     def input_model(self):
         return [
             list(Finder.load(i.source))[0]
@@ -65,6 +70,14 @@ class Tracker():
             'value': output_model,
         }).encode()).decode() + '\n')
         return output_model
+
+    def save_output_tensor(self, output_tensor):
+        logger.info(f'got output_tensor: {output_tensor}')
+        sys.stdout.write(b64encode(dumps({
+            'type': 'tensor',
+            'value': [],
+        }).encode()).decode() + '\n')
+        return []
 
     def save_summary(self, summary):
         logger.info(f'got summary: {summary}')
