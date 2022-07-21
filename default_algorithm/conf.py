@@ -1,6 +1,10 @@
 CONF = {
-    'Reader': {
-        'module': 'default_algorithm.reader',
+    'DataReader': {
+        'module': 'default_algorithm.reader.data_reader',
+        'cls': 'Reader'
+    },
+    'TensorReader': {
+        'module': 'default_algorithm.reader.tensor_reader',
         'cls': 'Reader'
     },
     'Upload': {

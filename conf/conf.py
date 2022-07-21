@@ -11,7 +11,7 @@ COMMUNICATION_ENGINE_MAP = {
 
 COMPUTING_ENGINE_MAP = {
     'TJQueue': {
-        'module': 'fl_component.computing.engine.TJQueue.session.Session'
+        'module': 'fl_component.computing.stream_computing.engine.TJQueue.session.Session'
     },
 }
 
@@ -32,3 +32,6 @@ PARTY_ID = '127.0.0.1:8443'
 
 
 ALLOWED_ROLES = ('GUEST', 'HOST', 'ARBITER')
+
+
+TENSOR_ENGINE = 'numpy' # or mars

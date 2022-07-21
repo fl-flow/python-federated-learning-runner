@@ -8,6 +8,7 @@ LabelQueue = None
 FeatureQueue = None
 IDIndex = None
 LabelIndex = None
+FeatureNames = []
 Count = {
     'label': 0,
     'id': 0,
@@ -17,6 +18,7 @@ Address = {
     'label': None,
     'id': None,
     'feature': None,
+    'meta': None
 }
 
 def readline(f):
@@ -36,8 +38,19 @@ def put_queue(item):
     FeatureQueue.put(item)
 
 
+def put_queue_without_label(item):
+    item = list(item)
+    id_ = item.pop(IDIndex)
+    IDQueue.put(id_)
+    FeatureQueue.put(item)
+
+
 def gen(q, type_):
     count = 0
+    data = q.get()
+    global FeatureNames
+    if type_ == 'feature':
+        FeatureNames = data
     while 1:
         data = q.get()
         if data == '':
@@ -95,19 +108,38 @@ class FileUploader():
             ),
             Thread(
                 target=storage_save_data_from_queue,
-                args=(LabelQueue, table_engin(address_engine()), 'label')
-            ),
-            Thread(
-                target=storage_save_data_from_queue,
                 args=(FeatureQueue, table_engin(address_engine()), 'feature')
             ),
         ]
-        for t in ts: t.start()
-        for i in readline(f): put_queue(i)
+        if LabelIndex >= 0:
+            ts.append(Thread(
+                target=storage_save_data_from_queue,
+                args=(LabelQueue, table_engin(address_engine()), 'label')
+            ))
+            for t in ts: t.start()
+            for i in readline(f): put_queue(i)
+        else:
+            for t in ts: t.start()
+            for i in readline(f): put_queue_without_label(i)
         IDQueue.put('')
         LabelQueue.put('')
         FeatureQueue.put('')
         for t in ts: t.join()
-        assert Count['id'] == Count['label'] == Count['feature'], \
-        f"error raw data, id.count({Count['id']}), label.count({Count['label']}), feature.count({Count['feature']})"
+        if LabelIndex >= 0:
+            assert Count['id'] == Count['label'] == Count['feature'], \
+            f"error raw data, id.count({Count['id']}), label.count({Count['label']}), feature.count({Count['feature']})"
+        else:
+            assert Count['id'] == Count['feature'], \
+            f"error raw data, id.count({Count['id']}),  feature.count({Count['feature']})"
+        meta_ = {
+            'feature_names': FeatureNames,
+            'has_label': True,
+            'has_id': True,
+            'label_address': Address['label'],
+            'id_address': Address['id'],
+            'feature_address': Address['feature'],
+
+        }
+        addr = table_engin(address_engine()).save([meta_])
+        Address['meta'] = addr
         return Address

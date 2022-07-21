@@ -7,7 +7,7 @@ from conf.conf import PARTY_ID
 from .parser.parser_runner import ParserRunner
 from conf.conf import COMPUTING_ENGINE, STORAGE_ENGINE
 from fl_component.storage.register import Register as StorageRegister
-from fl_component.computing.register import Register as ComputingRegister
+from fl_component.computing.stream_computing.register import Register as ComputingRegister
 from fl_component.communication.register import Register as CommunicationRegister
 
 
