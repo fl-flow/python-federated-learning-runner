@@ -40,8 +40,6 @@ class Tracker():
             tensors.append(
                 DataFrame(
                     feature_names=meta_['feature_names'],
-                    has_label=meta_['has_label'],
-                    has_id=meta_['has_id'],
                 ).load_data_from_storage(
                     id_storage=Finder.load(i.source['id']),
                     feature_storage=Finder.load(i.source['feature']),
@@ -63,12 +61,15 @@ class Tracker():
         engine, table_engin, address_engine = StorageRegister.get_engine()
         for i in output_data:
             yield table_engin(address_engine()).save(i)
-            # address = address_engine()
-            # table_engin(address).put_all(i)
-            # args = address.args
-            # yield f"{engine}://{args.get('username', '')}@{args.get('passwd', '')}:{args.get('port', '')}{args.get('path', '')}?{'&'.join([k+'='+v for k, v in args.get('query', {}).items()])}"
 
-    def save_output_data(self, output_data):
+    def save_output_data(self, output_data, ret=None):
+        if ret != None:
+            # TODO: validate????
+            sys.stdout.write(b64encode(dumps({
+                'type': 'data',
+                'value': ret,
+            }).encode()).decode() + '\n')
+            return
         logger.info(f'got output_data: {output_data}')
         output_data = list(self.__save(output_data))
         sys.stdout.write(b64encode(dumps({
@@ -78,7 +79,14 @@ class Tracker():
         return output_data
 
 
-    def save_output_model(self, output_model):
+    def save_output_model(self, output_model, ret=None):
+        if ret != None:
+            # TODO: validate????
+            sys.stdout.write(b64encode(dumps({
+                'type': 'model',
+                'value': ret,
+            }).encode()).decode() + '\n')
+            return
         logger.info(f'got output_model: {output_model}')
         output_model = list(self.__save(output_model))
         sys.stdout.write(b64encode(dumps({
@@ -87,16 +95,23 @@ class Tracker():
         }).encode()).decode() + '\n')
         return output_model
 
-    def save_output_tensor(self, output_tensor):
+    def save_output_tensor(self, output_tensor, ret=None):
+        if ret != None:
+            # TODO: validate????
+            sys.stdout.write(b64encode(dumps({
+                'type': 'tensor',
+                'value': ret,
+            }).encode()).decode() + '\n')
+            return
         logger.info(f'got output_tensor: {output_tensor}')
         engine, table_engin, address_engine = StorageRegister.get_engine()
         sys.stdout.write(b64encode(dumps({
             'type': 'tensor',
             'value': [
                 {
-                    'id': table_engin(address_engine()).save(t.id),
-                    'label': table_engin(address_engine()).save(t.label) if t.has_label else None,
-                    'feature': table_engin(address_engine()).save(t.feature),
+                    'id': table_engin(address_engine()).save(t.id.to_numpy()), # TODO:
+                    'label': table_engin(address_engine()).save(t.label.to_numpy()) if t.has_label else None, # TODO:
+                    'feature': table_engin(address_engine()).save(t.feature.to_numpy()), # TODO:
                     'meta': table_engin(address_engine()).save([{
                         'has_id': True,
                         'has_label': t.has_label,
@@ -106,7 +121,7 @@ class Tracker():
                 for t in output_tensor
             ],
         }).encode()).decode() + '\n')
-        return []
+        return
 
     def save_summary(self, summary):
         logger.info(f'got summary: {summary}')

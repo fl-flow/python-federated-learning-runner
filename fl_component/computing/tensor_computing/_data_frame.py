@@ -1,5 +1,4 @@
-import numpy as np
-from conf.conf import TENSOR_ENGINE
+import mars.tensor as mt
 
 
 class Meta():
@@ -11,12 +10,15 @@ class Meta():
             assert isinstance(i, str), 'error feature name'
         self._features = features
 
+    @property
     def id(self):
         return self._id
 
+    @property
     def label(self):
         return self._label
 
+    @property
     def features(self):
         return self._features
 
@@ -25,35 +27,40 @@ class DataFrame():
     def __init__(
         self,
         feature_names: tuple,
-        has_label: bool,
-        has_id: bool=True,
     ):
         self._meta = Meta(
             features=feature_names,
-            label=has_label,
-            ID=has_id,
+            label=False,
+            ID=False,
         )
 
 
+    def re_feature_names(self, feature_names):
+        self._meta._features = feature_names
+
     # meta info start
+    @property
     def has_id(self):
         return self._meta.id
 
+    @property
     def has_label(self):
         return self._meta.label
 
+    @property
     def feature_names(self):
         return self._meta.features
     # meta info end
 
 
     def load_data_from_storage(self, id_storage, feature_storage, label_storage):
-        if TENSOR_ENGINE == 'numpy':
-            self.id = np.array(list(id_storage))
-            self.label = np.array(list(label_storage))
-            self.feature = np.array(list(feature_storage))
-        else:
-            raise
+        _id_list = list(id_storage)
+        _label_list = list(label_storage)
+        self._meta._id = True if _id_list else False
+        self._meta._label = True if _label_list else False
+        self.id = mt.tensor(_id_list)
+        self.label = mt.tensor(_label_list)
+        self.feature = mt.tensor(list(feature_storage))
         return self
 
     # def load_data_from_iter(cls, id_iteration, data_iteration, label_iteration):

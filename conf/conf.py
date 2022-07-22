@@ -32,6 +32,3 @@ PARTY_ID = '127.0.0.1:8443'
 
 
 ALLOWED_ROLES = ('GUEST', 'HOST', 'ARBITER')
-
-
-TENSOR_ENGINE = 'numpy' # or mars

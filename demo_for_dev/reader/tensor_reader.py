@@ -10,7 +10,7 @@ sys.path.append(BASE_DIR)
 
 if __name__ == '__main__':
     p = subprocess.Popen(
-        ['python3', BASE_DIR / 'run.py', '-m', 'TensorReader'],
+        ['python3', BASE_DIR / 'run.py', '-m', 'TensorReader', '-ignoreprint', 'true'],
         stdin=subprocess.PIPE
     )
 

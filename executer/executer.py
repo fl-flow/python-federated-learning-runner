@@ -7,17 +7,26 @@ from conf.conf import PARTY_ID
 from .parser.parser_runner import ParserRunner
 from conf.conf import COMPUTING_ENGINE, STORAGE_ENGINE
 from fl_component.storage.register import Register as StorageRegister
-from fl_component.computing.stream_computing.register import Register as ComputingRegister
 from fl_component.communication.register import Register as CommunicationRegister
+from fl_component.computing.stream_computing.register import Register as ComputingRegister
 
 
 class Executer():
     def __init__(self):
         parser = argparse.ArgumentParser('传入参数：***.py')
         parser.add_argument('-m','--module', help='choose module')
+        parser.add_argument('-ignoreprint','--ignoreprint', help='ignore print')
         args = parser.parse_args()
         if not args.module:
             exit(1)
+        if args.ignoreprint:
+            from pathlib import Path
+            ignore_print = Path(__file__).resolve().parent.parent / 'var'/ 'ignore_print'
+            ignore_print_f = open(ignore_print, 'w')
+            import builtins
+            builtins.print = lambda *v: ignore_print_f.write(
+                ' '.join([str(i) for i in v]) + '\n'
+            ) and ignore_print_f.flush()
         self.module = args.module
         self.parser_runner = ParserRunner()
         self.parser_runner.load()
@@ -34,6 +43,8 @@ class Executer():
         setattr(self.algorithm, 'output_model', [])
         setattr(self.algorithm, 'output_tensor', [])
         setattr(self.algorithm, 'summary', {})
+        setattr(self.algorithm, 'role', self.parser_runner.task_info.role)
+        
         algorithm_cls = self.algorithm
         algorithm_cls.parse_parameter(self.parser_runner.parameters)
         instance = algorithm_cls()
@@ -41,16 +52,25 @@ class Executer():
         assert isinstance(instance.summary, dict), 'error summary'
         summary_ = self.tracker.save_summary(instance.summary)
 
-        output_data = self.tracker.save_output_data(instance.output_data)
-        self.tracker.save_output_model(instance.output_model)
-        self.tracker.save_output_tensor(instance.output_tensor)
+        output_data = self.tracker.save_output_data(
+            instance.output_data,
+            ret=getattr(instance, 'output_data_ret', None),
+        )
+        self.tracker.save_output_model(
+            instance.output_model,
+            ret=getattr(instance, 'output_model_ret', None),
+        )
+        self.tracker.save_output_tensor(
+            instance.output_tensor,
+            ret=getattr(instance, 'output_tensor_ret', None),
+        )
 
     def register_fl_component(self):
         task_info = self.parser_runner.task_info
-        session_id = task_info.job_id
+        session_id = f'{task_info.job_id}-{task_info.component}'
         common_parameter = self.parser_runner.common_parameter
         CommunicationRegister.register_engine(
-            session_id=session_id, # TODO:
+            session_id=session_id,
             engine=common_parameter.communication_parser.engine,
             party_map=common_parameter.party_map_parser.party_map,
             local_id=PARTY_ID,
@@ -58,7 +78,7 @@ class Executer():
         )
         self.parser_runner.task_info
         ComputingRegister.register_engine(
-            session_id=session_id, # TODO:
+            session_id=session_id,
             engine=COMPUTING_ENGINE,
         )
         StorageRegister.register_engine(
@@ -72,7 +92,10 @@ class Executer():
         # TODO:
         from default_algorithm.conf import CONF
         module_conf = CONF[self.module]
-
+        if not (module_conf.get('module') and module_conf.get('cls')):
+            role = self.parser_runner.task_info.role
+            module_conf = module_conf.get(role)
+            assert module_conf, f'error module {self.module} (role {role})'
         module = importlib.import_module(module_conf['module'])
         return getattr(module, module_conf['cls'])
 

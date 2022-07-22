@@ -29,7 +29,7 @@ class ParserRunner():
         logger.info(f'got common_parameter: {self.common_parameter}')
         self.parameters = self.parser.parse_parameter(
             (b64decode(input())).decode('utf-8')
-        )
+        ) or {}
         logger.info(f'got parameters: {self.parameters}')
         self.input_length = int((b64decode(input())).decode('utf-8'))
         logger.info(f'got input_length: {self.input_length}')
