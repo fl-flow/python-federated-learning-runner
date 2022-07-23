@@ -9,6 +9,8 @@ from conf.conf import COMPUTING_ENGINE, STORAGE_ENGINE
 from fl_component.storage.register import Register as StorageRegister
 from fl_component.communication.register import Register as CommunicationRegister
 from fl_component.computing.stream_computing.register import Register as ComputingRegister
+from fl_component.algorithm.io import FLInput, FLOutput
+
 
 
 class Executer():
@@ -36,33 +38,42 @@ class Executer():
 
         self.register_fl_component()
 
-        setattr(self.algorithm, 'input_data', self.tracker.input_data)
-        setattr(self.algorithm, 'input_model', self.tracker.input_model)
-        setattr(self.algorithm, 'input_tensor', self.tracker.input_tensor)
-        setattr(self.algorithm, 'output_data', [])
-        setattr(self.algorithm, 'output_model', [])
-        setattr(self.algorithm, 'output_tensor', [])
-        setattr(self.algorithm, 'summary', {})
-        setattr(self.algorithm, 'role', self.parser_runner.task_info.role)
-        
+        # setattr(self.algorithm, 'input_data', self.tracker.input_data)
+        # setattr(self.algorithm, 'input_model', self.tracker.input_model)
+        # setattr(self.algorithm, 'input_tensor', self.tracker.input_tensor)
+        # setattr(self.algorithm, 'role', self.parser_runner.task_info.role)
+        setattr(self.algorithm, 'fl_input', FLInput(
+            **{
+                'data': self.tracker.input_data,
+                'model': self.tracker.input_model,
+                'tensor': self.tracker.input_tensor,
+                'role': self.parser_runner.task_info.role
+            }
+        ))
+        setattr(self.algorithm, 'fl_output', FLOutput())
+        # setattr(self.algorithm, 'output_data', [])
+        # setattr(self.algorithm, 'output_model', [])
+        # setattr(self.algorithm, 'output_tensor', [])
+        # setattr(self.algorithm, 'summary', {})
+
         algorithm_cls = self.algorithm
         algorithm_cls.parse_parameter(self.parser_runner.parameters)
         instance = algorithm_cls()
         instance.run()
         assert isinstance(instance.summary, dict), 'error summary'
-        summary_ = self.tracker.save_summary(instance.summary)
+        summary_ = self.tracker.save_summary(instance.fl_output.summary)
 
         output_data = self.tracker.save_output_data(
-            instance.output_data,
-            ret=getattr(instance, 'output_data_ret', None),
+            instance.fl_output.data,
+            ret=instance.fl_output.data_ret
         )
         self.tracker.save_output_model(
-            instance.output_model,
-            ret=getattr(instance, 'output_model_ret', None),
+            instance.fl_output.model,
+            ret=instance.fl_output.model_ret
         )
         self.tracker.save_output_tensor(
-            instance.output_tensor,
-            ret=getattr(instance, 'output_tensor_ret', None),
+            instance.fl_output.tensor,
+            ret=instance.fl_output.tensor_ret
         )
 
     def register_fl_component(self):

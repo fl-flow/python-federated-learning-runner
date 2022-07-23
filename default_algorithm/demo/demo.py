@@ -14,17 +14,17 @@ class Demo(BaseAlgorithm):
         self.urls = None
 
     def run(self):
-        if self.role == 'GUEST':
+        if self.fl_input.role == 'GUEST':
             self.C.put(data=[0,2,5,4], tag=(1, 5, 6, 7, 8, 9), stream=True)
             from time import sleep
             sleep(4)
-        elif self.role == 'HOST':
+        elif self.fl_input.role == 'HOST':
             for i in list(self.C.get(tag=(1, 5, 6, 7, 8, 9))):
                 print(list(i), 'zzzzzz')
-            for i in self.input_data:
+            for i in self.fl_input.data:
                 print(i)
 
-            for i in self.input_tensor:
+            for i in self.fl_input.tensor:
                 print(i)
                 print(i.has_id, '(has_id)')
                 print(i.has_label, '(has_label)')
