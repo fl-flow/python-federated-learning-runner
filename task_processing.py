@@ -1,8 +1,6 @@
-from fl_component.processing.processing import Process
+from fl_component.processing._processing import _process
 
 
 if __name__ == '__main__':
-    f = open('ddd', 'w')
-    while 1:
-        f.write(input() + "\n")
-        f.flush()
+    p = _process()
+    p.run()
