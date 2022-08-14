@@ -36,7 +36,6 @@ class Engine():
 		return p_loads(base64.b64decode(raw))
 
 	def get_queue(self, partya, partyb, tag):
-		print(f'{self._session_id}-{partya.id}-{partya.role}-{partyb.id}-{partyb.role}-{tag}')
 		return f'{self._session_id}-{partya.id}-{partya.role}-{partyb.id}-{partyb.role}-{tag}'
 
 	def __pull_party(self, party, tag):
@@ -53,7 +52,6 @@ class Engine():
 			for p in parties
 		]
 		stream = is_streams[0]
-		print(stream)
 		assert all([i == stream for i in is_streams]), 'error stream'
 		if stream == b'true':
 			return [
@@ -61,7 +59,6 @@ class Engine():
 	    		for p in parties
     		]
 			return
-		print(111111)
 		return [
     		self.decode(self.client.pop(self.get_queue(p, self._local_party, tag)))
     		for p in parties

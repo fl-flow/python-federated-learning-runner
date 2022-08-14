@@ -1,2 +1,4 @@
 loguru==0.6.0
 pymars==0.9.0
+pytest==7.1.2
+pytest-cov==3.0.0

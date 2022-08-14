@@ -1,4 +1,7 @@
 import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
 import subprocess
 from json import dumps
 from base64 import b64encode
