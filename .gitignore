@@ -1,7 +1,8 @@
 *pyc
-var
-TJMQ
-TJQueue
+var/
 .coverage
 *.log
 *.DS_Store
+./env
+TJMQ
+TJQueue

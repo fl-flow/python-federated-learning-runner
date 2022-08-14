@@ -18,7 +18,7 @@ class Reader(BaseAlgorithm):
     def run(self):
         self.validate()
         computing_session = ComputingRegister.get_engine()
-        self.output_data_ret = output_data_ret
+        self.output_data_ret = self.urls
         # self.output_data = [
         #     computing_session.parallelize(
         #         data=Finder.load(url),
