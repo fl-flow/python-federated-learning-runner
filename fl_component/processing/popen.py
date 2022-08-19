@@ -1,3 +1,4 @@
+import socket
 from uuid import uuid4
 from pickle import dumps, loads
 from collections.abc import Iterable
@@ -5,10 +6,7 @@ from functools import cached_property
 from base64 import b64encode, b64decode
 
 from .output import Output
-
-FIFO_W_PATH = '/Users/xinchengshao/Desktop/workspace/dag-scheduler/process_pipe.ipc'
-FIFO_R_PATH = '/Users/xinchengshao/Desktop/workspace/dag-scheduler/process_pipe_w.ipc'
-
+from conf.conf import MULTIPROCESS_HOST, MULTIPROCESS_PORT
 
 
 class Popen():
@@ -33,15 +31,24 @@ class Popen():
         self.split_type = f'----------------obj-stream-{uuid4().hex}'
 
     @cached_property
+    def client(self):
+        client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        client.connect((MULTIPROCESS_HOST, MULTIPROCESS_PORT))
+        return client
+
+    @cached_property
     def w(self):
-        return open(FIFO_W_PATH, 'w')
+        return self.client.makefile('w')
 
     @cached_property
     def r(self):
-        return open(FIFO_R_PATH, 'r')
+        return self.client.makefile()
 
     def encode(self, v):
         return b64encode(v).decode()
+
+    def __del__(self):
+       self.client.close() 
 
     # TODO: semaphore
     def run(self):
