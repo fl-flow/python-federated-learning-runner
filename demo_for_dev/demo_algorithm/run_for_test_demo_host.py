@@ -8,7 +8,7 @@ from base64 import b64encode
 
 if __name__ == '__main__':
     p = subprocess.Popen(
-        ['python3', 'run.py', '-m', 'Demo'],
+        ['python3', str(Path(__file__).resolve().parent.parent.parent / 'run.py'), '-m', 'Demo'],
         stdin=subprocess.PIPE
     )
 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
             'annotation': -1,
             'value': dumps({
                 'type': 'tensor',
-                'value': [{'label': 'file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-14/fba58aa35ff4458db56c200b0e4f0af6?', 'id': 'file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-14/7cd3ba7b30ee40579b8917996b745773?', 'feature': 'file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-14/ec7667613dae4e2f929ad49edff06406?', 'meta': 'file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-14/2c98c11f039243ac9187012c9b7cddd6?'}],
+                'value': [{"id": "file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-18/e6fd3f4b6e794f46833c8942e2079fbd?", "meta": "file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-18/9b467d2675d640e2a601b6b26fed6d4d?", "label": "file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-18/6bfb2e69b7c94c3c966fe482699d3280?", "feature": "file://@:/Users/xinchengshao/Desktop/workspace/fl/python-federated-learning-runner/var/storage/2022-08-18/78110a5a83fc440ebaae387c00138d92?"}],
             })
         },
         {

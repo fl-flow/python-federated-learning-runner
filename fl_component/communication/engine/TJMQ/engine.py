@@ -29,6 +29,9 @@ class Engine():
 	def client(self):
 		return Client(ip=self._ip, port=self._port, from_queue=self._from_queue)
 
+	def close(self):
+		self.client.close()
+
 	def encode(self, data):
 		return base64.b64encode(p_dumps(data))
 

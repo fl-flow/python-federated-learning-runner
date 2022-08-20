@@ -12,7 +12,6 @@ from fl_component.computing.stream_computing.register import Register as Computi
 from fl_component.algorithm.io import FLInput, FLOutput
 
 
-
 class Executer():
     def __init__(self):
         parser = argparse.ArgumentParser('传入参数：***.py')
@@ -75,6 +74,9 @@ class Executer():
             instance.fl_output.tensor,
             ret=instance.fl_output.tensor_ret
         )
+        
+        getattr(CommunicationRegister.get_engine(), 'close', lambda : True)()
+
 
     def register_fl_component(self):
         task_info = self.parser_runner.task_info
