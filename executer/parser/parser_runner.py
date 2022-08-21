@@ -36,8 +36,10 @@ class ParserRunner():
         logger.info(f'got parameters: {self.parameters}')
         self.input_length = int((b64decode(input())).decode('utf-8'))
         logger.info(f'got input_length: {self.input_length}')
-        self.out_length = int((b64decode(input())).decode('utf-8'))
-        logger.info(f'got out_length: {self.out_length}')
+        # self.out_length = int((b64decode(input())).decode('utf-8'))
+        # logger.info(f'got out_length: {self.out_length}')
+        self.output_annotations = self.parser.parse_output_annotations((b64decode(input())).decode('utf-8'))
+        logger.info(f'got output_annotation: {self.output_annotations}')
         self.load_input_data()
 
     def load_input_data(self) -> list:

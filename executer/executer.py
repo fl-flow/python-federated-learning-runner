@@ -56,7 +56,8 @@ class Executer():
                 'data': self.tracker.input_data,
                 'model': self.tracker.input_model,
                 'tensor': self.tracker.input_tensor,
-                'role': self.parser_runner.task_info.role
+                'role': self.parser_runner.task_info.role,
+                'output_length': self.parser_runner.output_annotations,
             }
         ))
         setattr(self.algorithm, 'fl_output', FLOutput())

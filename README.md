@@ -93,6 +93,8 @@ communication = Communication(src_role='GUEST', dest_role='HOST')
 	| fl_input.model   	| list       | 输入模型，依据算法决定类型    |
 	| fl_input.tensor  	| List[fl_component.computing.tensor_computing.DataFrame]       | 输入矩阵，参考计算组件  |
 	| fl_input.role    	| str        | 角色，枚举类型，Guest; Host; Arbiter    |
+	| fl_input.output_lenght | int        | dag 中输出长度   |
+
 
 	2.2. 输出 BaseAlgorithm
 	

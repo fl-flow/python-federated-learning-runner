@@ -3,6 +3,7 @@ from json import loads, dumps
 
 from .io_parser import Input, Output
 from .task_info_parser import TaskInfoParser
+from .task_output_annotation_parser import TaskOutputAnnotationParser
 from .task_setting_parser import TaskSettingParser
 from .common_parameter_parser.common_parameter_parser import CommonParameterParser
 
@@ -23,6 +24,9 @@ class Parser():
         #     dumps(i.build_output())
         #     for i in outputs
         # ]
+
+    def parse_output_annotations(self, raw_output_annotations):
+        return TaskOutputAnnotationParser(raw_output_annotations)
 
     def parse_parameter(self, raw_parameters):
         return loads(raw_parameters)

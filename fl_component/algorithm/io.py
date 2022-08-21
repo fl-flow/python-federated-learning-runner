@@ -1,5 +1,5 @@
 class FLInput():
-    __slots__ = ['data', 'model', 'tensor', 'role']
+    __slots__ = ['data', 'model', 'tensor', 'role', 'output_length']
     def __init__(self, **kw):
         for k, v in kw.items():
             if k in self.__slots__:
