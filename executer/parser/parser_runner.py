@@ -23,6 +23,9 @@ class ParserRunner():
         self.task_info = self.parser.parse_task_info(
             (b64decode(input())).decode('utf-8')
         )
+        self.task_setting = self.parser.parse_task_setting(
+            (b64decode(input())).decode('utf-8')
+        )
         self.common_parameter = self.parser.parse_common_parameter(
             (b64decode(input())).decode('utf-8')
         )

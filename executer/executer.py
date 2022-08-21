@@ -1,4 +1,5 @@
 import argparse
+import resource
 import importlib
 from functools import cached_property
 
@@ -31,6 +32,15 @@ class Executer():
         self.module = args.module
         self.parser_runner = ParserRunner()
         self.parser_runner.load()
+
+        memory_needed = self.parser_runner.task_setting.resource.memory
+        if memory_needed > 0:
+            soft, hard = resource.getrlimit(resource.RLIMIT_AS)
+            resource.setrlimit(
+                resource.RLIMIT_AS,
+                (min([memory_needed, soft]), min([memory_needed, hard]))
+            )
+
         self.tracker = Tracker(self.parser_runner)
 
     def run(self):
